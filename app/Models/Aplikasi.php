@@ -21,6 +21,11 @@ class Aplikasi extends Model
         return $this->belongsTo(Lowongan::class);
     }
 
+    public function nilai()
+    {
+        return $this->hasOne(\App\Models\Nilai::class, 'aplikasi_id');
+    }
+
     /**
      * Human readable status label.
      * Usage: $aplikasi->status_label

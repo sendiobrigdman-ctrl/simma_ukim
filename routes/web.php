@@ -44,5 +44,11 @@ Route::prefix('dosen')->middleware(['auth', EnsureRoleIsDosen::class])->name('do
     Route::get('logbook', [DosenLogbookController::class, 'index'])->name('logbook.index');
     Route::get('logbook/{logbook}', [DosenLogbookController::class, 'show'])->name('logbook.show');
     Route::post('logbook/{logbook}/validate', [DosenLogbookController::class, 'update'])->name('logbook.update');
+    
+    Route::prefix('penilaian')->group(function () {
+        Route::get('/', [\App\Http\Controllers\DosenPenilaianController::class, 'index'])->name('penilaian.index');
+        Route::get('{aplikasi}/edit', [\App\Http\Controllers\DosenPenilaianController::class, 'edit'])->name('penilaian.edit');
+        Route::post('{aplikasi}', [\App\Http\Controllers\DosenPenilaianController::class, 'update'])->name('penilaian.update');
+    });
 });
 
