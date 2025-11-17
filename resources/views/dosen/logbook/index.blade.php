@@ -27,17 +27,19 @@
                     <td>{{ Str::limit($logbook->content, 100) }}</td>
                     <td>{{ $logbook->status_label ?? '' }}</td>
                     <td>
-                        <form action="{{ route('dosen.logbook.update', $logbook) }}" method="POST" style="display:inline-block">
-                            @csrf
-                            <input type="hidden" name="action" value="validate">
-                            <button class="btn btn-success btn-sm">Validasi</button>
-                        </form>
+                        @can('update', $logbook)
+                            <form action="{{ route('dosen.logbook.update', $logbook) }}" method="POST" style="display:inline-block">
+                                @csrf
+                                <input type="hidden" name="action" value="validate">
+                                <button class="btn btn-success btn-sm">Validasi</button>
+                            </form>
 
-                        <form action="{{ route('dosen.logbook.update', $logbook) }}" method="POST" style="display:inline-block">
-                            @csrf
-                            <input type="hidden" name="action" value="reject">
-                            <button class="btn btn-danger btn-sm">Tolak</button>
-                        </form>
+                            <form action="{{ route('dosen.logbook.update', $logbook) }}" method="POST" style="display:inline-block">
+                                @csrf
+                                <input type="hidden" name="action" value="reject">
+                                <button class="btn btn-danger btn-sm">Tolak</button>
+                            </form>
+                        @endcan
                     </td>
                 </tr>
             @endforeach
