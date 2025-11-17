@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MitraDashboardController;
 use App\Http\Controllers\MitraLowonganController;
+use App\Http\Controllers\MitraAplikasiController;
 use App\Http\Middleware\EnsureRoleIsMitra;
 use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', EnsureRoleIsMitra::class])->prefix('mitra')->name('mitra.')->group(function () {
     Route::get('/', [MitraDashboardController::class, 'index'])->name('dashboard');
     Route::resource('lowongans', MitraLowonganController::class);
+    Route::patch('/aplikasi/{aplikasi}/status', [MitraAplikasiController::class, 'updateStatus'])->name('aplikasi.updateStatus');
 });
 
 require __DIR__.'/auth.php';

@@ -4,13 +4,16 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\Lowongan;
+use App\Models\Aplikasi;
 use App\Policies\LowonganPolicy;
+use App\Policies\AplikasiPolicy;
 use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
     protected $policies = [
         Lowongan::class => LowonganPolicy::class,
+        Aplikasi::class => AplikasiPolicy::class,
     ];
 
     /**

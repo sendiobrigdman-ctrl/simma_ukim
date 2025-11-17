@@ -9,7 +9,17 @@ class Aplikasi extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'user_id', 'lowongan_id', 'status_aplikasi'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function lowongan()
+    {
+        return $this->belongsTo(Lowongan::class);
+    }
 
     /**
      * Human readable status label.
