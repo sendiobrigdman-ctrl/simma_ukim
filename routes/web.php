@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MitraDashboardController;
+use App\Http\Controllers\MitraLowonganController;
 use App\Http\Middleware\EnsureRoleIsMitra;
 use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/mitra', [MitraDashboardController::class, 'index'])
-    ->middleware(['auth', EnsureRoleIsMitra::class])
-    ->name('mitra.dashboard');
+Route::middleware(['auth', EnsureRoleIsMitra::class])->prefix('mitra')->name('mitra.')->group(function () {
+    Route::get('/', [MitraDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('lowongans', MitraLowonganController::class);
+});
 
 require __DIR__.'/auth.php';
 
@@ -33,3 +35,4 @@ Route::prefix('export')->group(function () {
     Route::get('/logbooks-index/{aplikasi}', [ExportController::class, 'logbooksIndex'])->name('export.logbooks-index');
     Route::get('/nilai', [ExportController::class, 'nilai'])->name('export.nilai');
 });
+

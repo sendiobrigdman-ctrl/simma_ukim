@@ -9,5 +9,15 @@ class Lowongan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'description', 'mitra_id', 'position', 'location', 'salary'];
+
+    public function mitra()
+    {
+        return $this->belongsTo(User::class, 'mitra_id');
+    }
+
+    public function aplikasis()
+    {
+        return $this->hasMany(Aplikasi::class);
+    }
 }

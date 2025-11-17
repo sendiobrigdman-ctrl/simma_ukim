@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function lowongans()
+    {
+        return $this->hasMany(Lowongan::class, 'mitra_id');
+    }
 }
