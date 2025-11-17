@@ -7,8 +7,9 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class LowonganExport implements FromCollection, WithHeadings, WithMapping
+class LowonganExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
     public function collection(): Collection
     {

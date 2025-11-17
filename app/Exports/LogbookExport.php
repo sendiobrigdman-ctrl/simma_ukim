@@ -7,8 +7,11 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class LogbookExport implements FromCollection, WithHeadings, WithMapping
+class LogbookExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting
 {
     protected $aplikasiId;
 
@@ -31,5 +34,13 @@ class LogbookExport implements FromCollection, WithHeadings, WithMapping
     {
         // Use model accessor for readable validation status
         return [$logbook->content, $logbook->status_label];
+    }
+
+    public function columnFormats(): array
+    {
+        // Column B (Status Validasi) as text
+        return [
+            'B' => NumberFormat::FORMAT_TEXT,
+        ];
     }
 }
