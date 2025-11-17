@@ -6,8 +6,9 @@ use App\Models\Logbook;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class LogbooksIndexExport implements FromCollection, WithHeadings
+class LogbooksIndexExport implements FromCollection, WithHeadings, WithMapping
 {
     protected $aplikasiId;
 
@@ -18,12 +19,16 @@ class LogbooksIndexExport implements FromCollection, WithHeadings
 
     public function collection(): Collection
     {
-        // In production this might return an index summary; for tests we'll return content
-        return Logbook::where('aplikasi_id', $this->aplikasiId)->get()->map(fn($l) => [$l->content]);
+        return Logbook::where('aplikasi_id', $this->aplikasiId)->get();
     }
 
     public function headings(): array
     {
         return ['Logbooks Index'];
+    }
+
+    public function map($logbook): array
+    {
+        return [$logbook->content];
     }
 }

@@ -6,16 +6,22 @@ use App\Models\Aplikasi;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class AplikasiExport implements FromCollection, WithHeadings
+class AplikasiExport implements FromCollection, WithHeadings, WithMapping
 {
     public function collection(): Collection
     {
-        return Aplikasi::all()->map(fn($a) => [$a->name]);
+        return Aplikasi::all();
     }
 
     public function headings(): array
     {
         return ['Aplikasi'];
+    }
+
+    public function map($aplikasi): array
+    {
+        return [$aplikasi->name];
     }
 }

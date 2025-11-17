@@ -6,8 +6,9 @@ use App\Models\Logbook;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class LogbookExport implements FromCollection, WithHeadings
+class LogbookExport implements FromCollection, WithHeadings, WithMapping
 {
     protected $aplikasiId;
 
@@ -18,11 +19,16 @@ class LogbookExport implements FromCollection, WithHeadings
 
     public function collection(): Collection
     {
-        return Logbook::where('aplikasi_id', $this->aplikasiId)->get()->map(fn($l) => [$l->content]);
+        return Logbook::where('aplikasi_id', $this->aplikasiId)->get();
     }
 
     public function headings(): array
     {
         return ['Logbook'];
+    }
+
+    public function map($logbook): array
+    {
+        return [$logbook->content];
     }
 }
