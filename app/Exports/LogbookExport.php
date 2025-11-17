@@ -24,11 +24,21 @@ class LogbookExport implements FromCollection, WithHeadings, WithMapping
 
     public function headings(): array
     {
-        return ['Logbook'];
+        return ['Logbook', 'Status Validasi'];
     }
 
     public function map($logbook): array
     {
-        return [$logbook->content];
+        $status = $logbook->status_validasi ?? null;
+
+        $map = [
+            'menunggu' => 'Menunggu Validasi',
+            'divalidasi' => 'Divalidasi',
+            'ditolak' => 'Ditolak',
+        ];
+
+        $readable = $status !== null ? ($map[$status] ?? $status) : '';
+
+        return [$logbook->content, $readable];
     }
 }
