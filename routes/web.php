@@ -6,6 +6,8 @@ use App\Http\Controllers\MitraLowonganController;
 use App\Http\Controllers\MitraAplikasiController;
 use App\Http\Middleware\EnsureRoleIsMitra;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\DosenLogbookController;
+use App\Http\Middleware\EnsureRoleIsDosen;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,5 +38,11 @@ Route::prefix('export')->group(function () {
     Route::get('/logbook/{aplikasi}', [ExportController::class, 'logbook'])->name('export.logbook');
     Route::get('/logbooks-index/{aplikasi}', [ExportController::class, 'logbooksIndex'])->name('export.logbooks-index');
     Route::get('/nilai', [ExportController::class, 'nilai'])->name('export.nilai');
+});
+
+Route::prefix('dosen')->middleware(['auth', EnsureRoleIsDosen::class])->name('dosen.')->group(function () {
+    Route::get('logbook', [DosenLogbookController::class, 'index'])->name('logbook.index');
+    Route::get('logbook/{logbook}', [DosenLogbookController::class, 'show'])->name('logbook.show');
+    Route::post('logbook/{logbook}/validate', [DosenLogbookController::class, 'update'])->name('logbook.update');
 });
 
