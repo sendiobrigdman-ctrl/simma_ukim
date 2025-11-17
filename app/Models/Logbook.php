@@ -15,4 +15,25 @@ class Logbook extends Model
     {
         return $this->belongsTo(Aplikasi::class);
     }
+
+    /**
+     * Human readable validation status label.
+     * Usage: $logbook->status_label
+     */
+    public function getStatusLabelAttribute(): string
+    {
+        $status = $this->status_validasi ?? null;
+
+        $map = [
+            'menunggu' => 'Menunggu Validasi',
+            'divalidasi' => 'Divalidasi',
+            'ditolak' => 'Ditolak',
+        ];
+
+        if ($status === null) {
+            return '';
+        }
+
+        return $map[$status] ?? $status;
+    }
 }

@@ -29,16 +29,7 @@ class LogbookExport implements FromCollection, WithHeadings, WithMapping
 
     public function map($logbook): array
     {
-        $status = $logbook->status_validasi ?? null;
-
-        $map = [
-            'menunggu' => 'Menunggu Validasi',
-            'divalidasi' => 'Divalidasi',
-            'ditolak' => 'Ditolak',
-        ];
-
-        $readable = $status !== null ? ($map[$status] ?? $status) : '';
-
-        return [$logbook->content, $readable];
+        // Use model accessor for readable validation status
+        return [$logbook->content, $logbook->status_label];
     }
 }

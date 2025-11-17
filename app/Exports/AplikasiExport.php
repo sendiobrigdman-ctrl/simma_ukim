@@ -22,17 +22,7 @@ class AplikasiExport implements FromCollection, WithHeadings, WithMapping
 
     public function map($aplikasi): array
     {
-        $status = $aplikasi->status_aplikasi ?? null;
-
-        // map status codes to human-readable Indonesian labels
-        $map = [
-            'pending' => 'Menunggu',
-            'diterima_mitra' => 'Diterima',
-            'ditolak' => 'Ditolak',
-        ];
-
-        $readable = $status !== null ? ($map[$status] ?? $status) : '';
-
-        return [$aplikasi->name, $readable];
+        // Use model accessor for readable status
+        return [$aplikasi->name, $aplikasi->status_label];
     }
 }
