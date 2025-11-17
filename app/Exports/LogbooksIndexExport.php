@@ -8,8 +8,11 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class LogbooksIndexExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
+class LogbooksIndexExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithEvents
 {
     protected $aplikasiId;
 
@@ -31,5 +34,23 @@ class LogbooksIndexExport implements FromCollection, WithHeadings, WithMapping, 
     public function map($logbook): array
     {
         return [$logbook->content];
+    }
+
+    public function styles($sheet)
+    {
+        // Make header row bold
+        $sheet->getStyle('1')->getFont()->setBold(true);
+
+        return $sheet;
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                // Freeze the header row (row 1)
+                $event->sheet->freezePane('A2');
+            },
+        ];
     }
 }

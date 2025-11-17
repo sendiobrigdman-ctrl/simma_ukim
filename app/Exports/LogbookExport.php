@@ -9,9 +9,12 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class LogbookExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting
+class LogbookExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles, WithEvents
 {
     protected $aplikasiId;
 
@@ -41,6 +44,24 @@ class LogbookExport implements FromCollection, WithHeadings, WithMapping, Should
         // Column B (Status Validasi) as text
         return [
             'B' => NumberFormat::FORMAT_TEXT,
+        ];
+    }
+
+    public function styles($sheet)
+    {
+        // Make header row bold
+        $sheet->getStyle('1')->getFont()->setBold(true);
+
+        return $sheet;
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                // Freeze the header row (row 1)
+                $event->sheet->freezePane('A2');
+            },
         ];
     }
 }
