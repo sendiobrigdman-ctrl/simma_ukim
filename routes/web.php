@@ -67,5 +67,8 @@ Route::prefix('admin')->middleware(['auth', EnsureRoleIsAdmin::class])->name('ad
 
     // User management
     Route::resource('users', AdminUserController::class);
+
+    // Mitra management
+    Route::resource('mitra', \App\Http\Controllers\AdminMitraController::class);
 });
 
