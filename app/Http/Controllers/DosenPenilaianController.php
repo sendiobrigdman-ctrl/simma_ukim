@@ -22,20 +22,14 @@ class DosenPenilaianController extends Controller
 
     public function edit(Aplikasi $aplikasi)
     {
-        $user = Auth::user();
-        if (($aplikasi->dosen_id ?? null) !== $user->id) {
-            abort(403);
-        }
+        $this->authorize('manageNilai', $aplikasi);
 
         return view('dosen.penilaian.edit', compact('aplikasi'));
     }
 
     public function update(Request $request, Aplikasi $aplikasi)
     {
-        $user = Auth::user();
-        if (($aplikasi->dosen_id ?? null) !== $user->id) {
-            abort(403);
-        }
+        $this->authorize('manageNilai', $aplikasi);
 
         $data = $request->validate([
             'nilai_bimbingan' => ['nullable', 'integer', 'between:0,100'],

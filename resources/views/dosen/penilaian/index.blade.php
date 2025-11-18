@@ -27,7 +27,9 @@
                     <td>{{ $aplikasi->lowongan->title ?? '—' }}</td>
                     <td>{{ $aplikasi->nilai?->nilai_rata_rata ?? '—' }}</td>
                     <td>
-                        <a href="{{ route('dosen.penilaian.edit', $aplikasi) }}" class="btn btn-primary btn-sm">Input Nilai</a>
+                        @can('manageNilai', $aplikasi)
+                            <a href="{{ route('dosen.penilaian.edit', $aplikasi) }}" class="btn btn-primary btn-sm">Input Nilai</a>
+                        @endcan
                     </td>
                 </tr>
             @endforeach

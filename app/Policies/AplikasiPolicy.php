@@ -24,4 +24,12 @@ class AplikasiPolicy
     {
         return $aplikasi->lowongan?->mitra_id === $user->id;
     }
+
+    /**
+     * Check if dosen can manage nilai for this aplikasi
+     */
+    public function manageNilai(User $user, Aplikasi $aplikasi): bool
+    {
+        return ($aplikasi->dosen_id ?? null) === $user->id;
+    }
 }
