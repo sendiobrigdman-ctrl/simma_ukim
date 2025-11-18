@@ -8,6 +8,8 @@ use App\Http\Middleware\EnsureRoleIsMitra;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\DosenLogbookController;
 use App\Http\Middleware\EnsureRoleIsDosen;
+use App\Http\Middleware\EnsureRoleIsAdmin;
+use App\Http\Controllers\AdminUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,6 +30,12 @@ Route::middleware(['auth', EnsureRoleIsMitra::class])->prefix('mitra')->name('mi
     Route::get('/', [MitraDashboardController::class, 'index'])->name('dashboard');
     Route::resource('lowongans', MitraLowonganController::class);
     Route::patch('/aplikasi/{aplikasi}/status', [MitraAplikasiController::class, 'updateStatus'])->name('aplikasi.updateStatus');
+    
+    Route::prefix('penilaian')->group(function () {
+        Route::get('/', [\App\Http\Controllers\MitraPenilaianController::class, 'index'])->name('penilaian.index');
+        Route::get('{aplikasi}/edit', [\App\Http\Controllers\MitraPenilaianController::class, 'edit'])->name('penilaian.edit');
+        Route::post('{aplikasi}', [\App\Http\Controllers\MitraPenilaianController::class, 'update'])->name('penilaian.update');
+    });
 });
 
 require __DIR__.'/auth.php';
@@ -50,5 +58,14 @@ Route::prefix('dosen')->middleware(['auth', EnsureRoleIsDosen::class])->name('do
         Route::get('{aplikasi}/edit', [\App\Http\Controllers\DosenPenilaianController::class, 'edit'])->name('penilaian.edit');
         Route::post('{aplikasi}', [\App\Http\Controllers\DosenPenilaianController::class, 'update'])->name('penilaian.update');
     });
+});
+
+Route::prefix('admin')->middleware(['auth', EnsureRoleIsAdmin::class])->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+
+    // User management
+    Route::resource('users', AdminUserController::class);
 });
 

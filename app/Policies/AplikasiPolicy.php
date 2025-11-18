@@ -26,10 +26,19 @@ class AplikasiPolicy
     }
 
     /**
-     * Check if dosen can manage nilai for this aplikasi
+     * Check if dosen can manage nilai bimbingan and laporan for this aplikasi
      */
     public function manageNilai(User $user, Aplikasi $aplikasi): bool
     {
         return ($aplikasi->dosen_id ?? null) === $user->id;
+    }
+
+    /**
+     * Check if mitra can manage nilai_mitra for this aplikasi
+     * (only mitra whose lowongan this aplikasi belongs to can update)
+     */
+    public function manageNilaiMitra(User $user, Aplikasi $aplikasi): bool
+    {
+        return $aplikasi->lowongan?->mitra_id === $user->id;
     }
 }
