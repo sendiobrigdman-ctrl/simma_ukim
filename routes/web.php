@@ -16,7 +16,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Demo walkthrough page (quick role switching for presentations)
+Route::get('/demo', [DemoController::class, 'index'])->name('demo.index');
+Route::post('/demo/login', [DemoController::class, 'loginAs'])->name('demo.login');
+
 use App\Http\Controllers\DashboardController;
+
+use App\Http\Controllers\DemoController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
