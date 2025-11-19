@@ -60,10 +60,19 @@ Route::prefix('dosen')->middleware(['auth', EnsureRoleIsDosen::class])->name('do
     });
 });
 
+use App\Http\Controllers\MahasiswaLowonganController;
+use App\Http\Controllers\MahasiswaAplikasiController;
+use App\Http\Middleware\EnsureRoleIsMahasiswa;
+
+// Mahasiswa portal lowongan & aplikasi
+Route::middleware(['auth', EnsureRoleIsMahasiswa::class])->prefix('lowongan')->name('mahasiswa.lowongan.')->group(function () {
+    Route::get('/', [MahasiswaLowonganController::class, 'index'])->name('index');
+    Route::get('/{lowongan}', [MahasiswaLowonganController::class, 'show'])->name('show');
+    Route::post('/{lowongan}/apply', [MahasiswaAplikasiController::class, 'store'])->name('apply');
+});
+
 Route::prefix('admin')->middleware(['auth', EnsureRoleIsAdmin::class])->name('admin.')->group(function () {
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/', \App\Http\Controllers\AdminDashboardController::class)->name('dashboard');
 
     // User management
     Route::resource('users', AdminUserController::class);
