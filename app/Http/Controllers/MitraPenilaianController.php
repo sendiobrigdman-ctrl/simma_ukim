@@ -58,4 +58,49 @@ class MitraPenilaianController extends Controller
 
         return redirect()->route('mitra.penilaian.index')->with('status', 'Nilai kinerja berhasil disimpan.');
     }
+
+    /**
+     * Show final grading form for an application (penilaian).
+     */
+    public function create(Aplikasi $aplikasi)
+    {
+        $user = auth()->user();
+
+        // Only mitra owner can grade
+        if ($aplikasi->lowongan->mitra_id !== $user->id) {
+            abort(403);
+        }
+
+        return view('mitra.penilaian.create', compact('aplikasi'));
+    }
+
+    /**
+     * Store final penilaian for an application.
+     */
+    public function store(Request $request, Aplikasi $aplikasi)
+    {
+        $user = auth()->user();
+
+        if ($aplikasi->lowongan->mitra_id !== $user->id) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'nilai_disiplin' => ['required', 'integer', 'between:0,100'],
+            'nilai_kerja' => ['required', 'integer', 'between:0,100'],
+            'catatan' => ['nullable', 'string'],
+        ]);
+
+        // create or update penilaian
+        $penilaian = \App\Models\Penilaian::updateOrCreate(
+            ['aplikasi_id' => $aplikasi->id],
+            [
+                'nilai_disiplin' => $data['nilai_disiplin'],
+                'nilai_kerja' => $data['nilai_kerja'],
+                'catatan' => $data['catatan'] ?? null,
+            ]
+        );
+
+        return redirect()->route('mitra.penilaian.index')->with('status', 'Penilaian berhasil disimpan.');
+    }
 }

@@ -51,6 +51,9 @@
                                         <input type="hidden" name="status_aplikasi" value="ditolak_mitra">
                                         <button class="bg-red-600 text-white px-3 py-1 rounded text-sm">Tolak</button>
                                     </form>
+                                    @if($aplikasi->status_aplikasi === 'diterima_mitra')
+                                        <a href="{{ route('mitra.penilaian.create', $aplikasi) }}" class="inline-block ml-2 bg-blue-600 text-white px-3 py-1 rounded text-sm">Beri Nilai</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

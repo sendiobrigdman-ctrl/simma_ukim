@@ -39,6 +39,9 @@ Route::middleware(['auth', EnsureRoleIsMitra::class])->prefix('mitra')->name('mi
         Route::get('/', [\App\Http\Controllers\MitraPenilaianController::class, 'index'])->name('penilaian.index');
         Route::get('{aplikasi}/edit', [\App\Http\Controllers\MitraPenilaianController::class, 'edit'])->name('penilaian.edit');
         Route::post('{aplikasi}', [\App\Http\Controllers\MitraPenilaianController::class, 'update'])->name('penilaian.update');
+        // Final evaluation (penilaian) by mitra
+        Route::get('{aplikasi}/create', [\App\Http\Controllers\MitraPenilaianController::class, 'create'])->name('penilaian.create');
+        Route::post('{aplikasi}/store', [\App\Http\Controllers\MitraPenilaianController::class, 'store'])->name('penilaian.store');
     });
     
     // Pelamar management for mitra: list applicants and update status
@@ -91,6 +94,8 @@ Route::middleware(['auth', EnsureRoleIsMahasiswa::class])->prefix('mahasiswa')->
     Route::get('/logbooks/create', [\App\Http\Controllers\MahasiswaLogbookController::class, 'create'])->name('logbooks.create');
     Route::post('/logbooks', [\App\Http\Controllers\MahasiswaLogbookController::class, 'store'])->name('logbooks.store');
     Route::delete('/logbooks/{logbook}', [\App\Http\Controllers\MahasiswaLogbookController::class, 'destroy'])->name('logbooks.destroy');
+    // Mahasiswa: view penilaian for their aplikasi
+    Route::get('/penilaian/{aplikasi}', [\App\Http\Controllers\PenilaianController::class, 'show'])->name('penilaian.show');
 });
 
 Route::prefix('admin')->middleware(['auth', EnsureRoleIsAdmin::class])->name('admin.')->group(function () {
