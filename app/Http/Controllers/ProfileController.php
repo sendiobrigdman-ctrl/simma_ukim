@@ -31,15 +31,16 @@ class ProfileController extends Controller
 
         $data = $request->validated();
 
-        // Handle photo upload (store on public disk under photos/)
+        // Handle photo upload (store on configured default disk under photos/)
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $path = $file->store('photos', 'public');
+            $disk = config('filesystems.default');
+            $path = $file->store('photos', $disk);
 
-            // Delete old photo if exists (on public disk)
+            // Delete old photo if exists (on the same disk)
             if ($user->foto_path) {
                 try {
-                    Storage::disk('public')->delete($user->foto_path);
+                    Storage::disk($disk)->delete($user->foto_path);
                 } catch (\Exception $e) {
                     // ignore deletion errors for now
                 }
