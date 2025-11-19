@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -43,6 +43,47 @@
                             {{ __('A new verification link has been sent to your email address.') }}
                         </p>
                     @endif
+                </div>
+            @endif
+        </div>
+
+        <div>
+            <x-input-label for="nim" :value="__('NIM')" />
+            <x-text-input id="nim" name="nim" type="text" class="mt-1 block w-full" :value="old('nim', $user->nim)" />
+            <x-input-error class="mt-2" :messages="$errors->get('nim')" />
+        </div>
+
+        <div>
+            <x-input-label for="jurusan" :value="__('Jurusan')" />
+            <x-text-input id="jurusan" name="jurusan" type="text" class="mt-1 block w-full" :value="old('jurusan', $user->jurusan)" />
+            <x-input-error class="mt-2" :messages="$errors->get('jurusan')" />
+        </div>
+
+        <div>
+            <x-input-label for="angkatan" :value="__('Angkatan')" />
+            <x-text-input id="angkatan" name="angkatan" type="number" class="mt-1 block w-full" :value="old('angkatan', $user->angkatan)" />
+            <x-input-error class="mt-2" :messages="$errors->get('angkatan')" />
+        </div>
+
+        <div>
+            <x-input-label for="ipk" :value="__('IPK')" />
+            <x-text-input id="ipk" name="ipk" type="text" class="mt-1 block w-full" :value="old('ipk', $user->ipk)" />
+            <x-input-error class="mt-2" :messages="$errors->get('ipk')" />
+        </div>
+
+        <div>
+            <x-input-label for="no_hp" :value="__('No. HP')" />
+            <x-text-input id="no_hp" name="no_hp" type="text" class="mt-1 block w-full" :value="old('no_hp', $user->no_hp)" />
+            <x-input-error class="mt-2" :messages="$errors->get('no_hp')" />
+        </div>
+
+        <div>
+            <x-input-label for="foto" :value="__('Foto Profil')" />
+            <input id="foto" name="foto" type="file" accept="image/*" class="mt-1 block w-full" />
+            <x-input-error class="mt-2" :messages="$errors->get('foto')" />
+            @if($user->foto_path)
+                <div class="mt-2">
+                    <img src="{{ Storage::url($user->foto_path) }}" alt="Foto profil" class="h-20 w-20 object-cover rounded" />
                 </div>
             @endif
         </div>

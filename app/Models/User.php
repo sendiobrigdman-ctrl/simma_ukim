@@ -22,6 +22,12 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'nim',
+        'jurusan',
+        'angkatan',
+        'ipk',
+        'no_hp',
+        'foto_path',
     ];
 
     /**
@@ -44,7 +50,14 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'ipk' => 'float',
+            'angkatan' => 'integer',
         ];
+    }
+
+    public function aplikasis()
+    {
+        return $this->hasMany(\App\Models\Aplikasi::class, 'user_id');
     }
 
     public function lowongans()
@@ -52,8 +65,4 @@ class User extends Authenticatable
         return $this->hasMany(Lowongan::class, 'mitra_id');
     }
 
-    public function aplikasis()
-    {
-        return $this->hasMany(\App\Models\Aplikasi::class, 'user_id');
-    }
 }
