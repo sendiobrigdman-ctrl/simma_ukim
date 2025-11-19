@@ -11,6 +11,9 @@
             <p><strong>Nilai Disiplin:</strong> {{ $penilaian->nilai_disiplin }}</p>
             <p><strong>Nilai Kerja:</strong> {{ $penilaian->nilai_kerja }}</p>
             <p><strong>Rata-rata:</strong> {{ $penilaian->rata_rata }}</p>
+            <div class="mt-4">
+                <a href="{{ route('mahasiswa.sertifikat.show', $penilaian) }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded no-print">Lihat Sertifikat</a>
+            </div>
             @if($penilaian->catatan)
                 <div class="mt-4">
                     <h4 class="font-semibold">Catatan</h4>

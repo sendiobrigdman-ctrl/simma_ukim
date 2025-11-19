@@ -96,6 +96,8 @@ Route::middleware(['auth', EnsureRoleIsMahasiswa::class])->prefix('mahasiswa')->
     Route::delete('/logbooks/{logbook}', [\App\Http\Controllers\MahasiswaLogbookController::class, 'destroy'])->name('logbooks.destroy');
     // Mahasiswa: view penilaian for their aplikasi
     Route::get('/penilaian/{aplikasi}', [\App\Http\Controllers\PenilaianController::class, 'show'])->name('penilaian.show');
+    // Mahasiswa: view sertifikat if penilaian exists
+    Route::get('/sertifikat/{penilaian}', [\App\Http\Controllers\SertifikatController::class, 'show'])->name('sertifikat.show');
 });
 
 Route::prefix('admin')->middleware(['auth', EnsureRoleIsAdmin::class])->name('admin.')->group(function () {
