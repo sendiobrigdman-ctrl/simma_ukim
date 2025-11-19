@@ -24,6 +24,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Download CV for aplikasi (auth required, further authorization inside controller)
+    Route::get('/aplikasi/{aplikasi}/download-cv', [\App\Http\Controllers\AplikasiController::class, 'downloadCv'])
+        ->name('aplikasi.downloadCv');
 });
 
 Route::middleware(['auth', EnsureRoleIsMitra::class])->prefix('mitra')->name('mitra.')->group(function () {
