@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Aplikasi extends Model
 {
@@ -45,5 +46,14 @@ class Aplikasi extends Model
         }
 
         return $map[$status] ?? $status;
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function (self $aplikasi) {
+            if ($aplikasi->cv_path) {
+                Storage::delete($aplikasi->cv_path);
+            }
+        });
     }
 }

@@ -100,6 +100,12 @@
                                             </button>
                                         </form>
                                     @endif
+                                        @if ($aplikasi->cv_path && (auth()->user()->role === 'admin' || (auth()->user()->role === 'mitra' && auth()->id() === $lowongan->mitra_id)))
+                                            <a href="{{ route('aplikasi.downloadCv', $aplikasi) }}" class="inline-flex items-center bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 text-sm ml-2">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M21 21H3"></path></svg>
+                                                Download CV
+                                            </a>
+                                        @endif
                                 </td>
                             </tr>
                         @endforeach
