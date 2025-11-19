@@ -1,3 +1,5 @@
+$target = Join-Path $PSScriptRoot '..\app\Models\User.php' | Resolve-Path -Relative
+$content = @'
 <?php
 
 namespace App\Models;
@@ -45,7 +47,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'ipk' => 'decimal:2',
+        'ipk' => 'float',
         'angkatan' => 'integer',
     ];
 
@@ -82,3 +84,8 @@ class User extends Authenticatable
     }
 
 }
+'@
+
+$enc = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllBytes((Resolve-Path $target).Path, $enc.GetBytes($content))
+Write-Host "WROTE_NO_BOM"

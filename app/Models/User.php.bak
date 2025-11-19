@@ -1,0 +1,56 @@
+﻿<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable
+{
+    use HasFactory, Notifiable;
+
+    protected  = [
+        'name',
+        'email',
+        'password',
+        'role',
+        'nim',
+        'jurusan',
+        'angkatan',
+        'ipk',
+        'no_hp',
+        'foto_path',
+    ];
+
+    protected  = [
+        'password',
+        'remember_token',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'ipk' => 'float',
+            'angkatan' => 'integer',
+        ];
+    }
+
+    public function aplikasis()
+    {
+        return ->hasMany(\App\Models\Aplikasi::class, 'user_id');
+    }
+
+    public function lowongans()
+    {
+        return ->hasMany(Lowongan::class, 'mitra_id');
+    }
+
+    public function hasRole(): bool
+    {
+        return ->role === ;
+    }
+
+}
