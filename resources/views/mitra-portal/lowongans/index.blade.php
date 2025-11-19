@@ -22,6 +22,7 @@
                         <th class="border border-gray-300 px-4 py-2">Posisi</th>
                         <th class="border border-gray-300 px-4 py-2">Lokasi</th>
                         <th class="border border-gray-300 px-4 py-2">Gaji</th>
+                        <th class="border border-gray-300 px-4 py-2">Status</th>
                         <th class="border border-gray-300 px-4 py-2">Aksi</th>
                     </tr>
                 </thead>
@@ -32,6 +33,20 @@
                             <td class="border border-gray-300 px-4 py-2">{{ $lowongan->position ?? '-' }}</td>
                             <td class="border border-gray-300 px-4 py-2">{{ $lowongan->location ?? '-' }}</td>
                             <td class="border border-gray-300 px-4 py-2">{{ $lowongan->salary ?? '-' }}</td>
+                            <td class="border border-gray-300 px-4 py-2">
+                                @php
+                                    $status = $lowongan->status ?? 'pending';
+                                @endphp
+                                @if($status === \App\Models\Lowongan::STATUS_PENDING)
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                @elseif($status === \App\Models\Lowongan::STATUS_APPROVED)
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                                @elseif($status === \App\Models\Lowongan::STATUS_REJECTED)
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Rejected</span>
+                                @else
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ ucfirst($status) }}</span>
+                                @endif
+                            </td>
                             <td class="border border-gray-300 px-4 py-2">
                                 <a href="{{ route('mitra.lowongans.show', $lowongan) }}" class="text-blue-600 hover:underline">Lihat</a>
                                 <a href="{{ route('mitra.lowongans.edit', $lowongan) }}" class="text-yellow-600 hover:underline ml-2">Edit</a>

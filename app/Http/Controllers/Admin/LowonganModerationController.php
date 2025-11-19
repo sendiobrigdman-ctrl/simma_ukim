@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LowonganStatusUpdated;
 
 class LowonganModerationController extends Controller
 {
@@ -31,6 +33,15 @@ class LowonganModerationController extends Controller
         $status = $request->input('status');
         $lowongan->status = $status;
         $lowongan->save();
+
+        // Notify mitra by email if they have an email
+        if ($lowongan->mitra && $lowongan->mitra->email) {
+            try {
+                Mail::to($lowongan->mitra->email)->send(new LowonganStatusUpdated($lowongan, $status));
+            } catch (\Exception $e) {
+                // fail silently for now
+            }
+        }
 
         return redirect()->route('admin.lowongans.moderation.index')->with('status', 'lowongan-updated');
     }

@@ -68,6 +68,12 @@ class MitraLowonganController extends Controller
 
         $lowongan->update($request->validated());
 
+        // If lowongan was rejected before, reset to pending after mitra updates it
+        if ($lowongan->status === Lowongan::STATUS_REJECTED) {
+            $lowongan->status = Lowongan::STATUS_PENDING;
+            $lowongan->save();
+        }
+
         return redirect()->route('mitra.lowongans.show', $lowongan)
             ->with('success', 'Lowongan berhasil diperbarui.');
     }

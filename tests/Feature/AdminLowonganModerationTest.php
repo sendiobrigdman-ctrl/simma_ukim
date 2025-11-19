@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LowonganStatusUpdated;
 use Tests\TestCase;
 
 class AdminLowonganModerationTest extends TestCase
@@ -15,7 +17,10 @@ class AdminLowonganModerationTest extends TestCase
     {
         $admin = User::factory()->create(['role' => 'admin']);
 
-        $lowongan = Lowongan::factory()->create(['status' => Lowongan::STATUS_PENDING]);
+        $mitra = User::factory()->create(['role' => 'mitra', 'email' => 'mitra@example.test']);
+        $lowongan = Lowongan::factory()->create(['status' => Lowongan::STATUS_PENDING, 'mitra_id' => $mitra->id]);
+
+        Mail::fake();
 
         $this->actingAs($admin);
 
@@ -27,5 +32,9 @@ class AdminLowonganModerationTest extends TestCase
 
         $lowongan->refresh();
         $this->assertEquals(Lowongan::STATUS_APPROVED, $lowongan->status);
+
+        Mail::assertSent(LowonganStatusUpdated::class, function ($mail) use ($mitra) {
+            return $mail->hasTo($mitra->email);
+        });
     }
 }
