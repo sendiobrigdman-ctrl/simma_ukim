@@ -79,6 +79,11 @@ Route::middleware(['auth', EnsureRoleIsMahasiswa::class])->prefix('lowongan')->n
     Route::post('/{lowongan}/apply', [MahasiswaAplikasiController::class, 'store'])->name('apply');
 });
 
+// Mahasiswa application history
+Route::middleware(['auth', EnsureRoleIsMahasiswa::class])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
+    Route::get('/lamaran', [MahasiswaAplikasiController::class, 'index'])->name('aplikasi.index');
+});
+
 Route::prefix('admin')->middleware(['auth', EnsureRoleIsAdmin::class])->name('admin.')->group(function () {
     Route::get('/', \App\Http\Controllers\AdminDashboardController::class)->name('dashboard');
 

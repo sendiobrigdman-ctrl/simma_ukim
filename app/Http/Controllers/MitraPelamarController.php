@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Lowongan;
 use App\Models\Aplikasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LamaranStatusUpdated;
 
 class MitraPelamarController extends Controller
 {
@@ -34,6 +36,14 @@ class MitraPelamarController extends Controller
         ]);
 
         $aplikasi->update(['status_aplikasi' => $data['status_aplikasi']]);
+
+        // Send notification to the applicant
+        try {
+            Mail::to($aplikasi->user->email)->send(new LamaranStatusUpdated($aplikasi));
+        } catch (\Exception $e) {
+            // If sending fails, we'll still continue — make it non-blocking for the UI
+            // Consider logging in production.
+        }
 
         return redirect()->back()->with('success', 'Status pelamar berhasil diupdate.');
     }

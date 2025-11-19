@@ -16,6 +16,14 @@ class MahasiswaAplikasiController extends Controller
         return view('mahasiswa.lowongan.apply', compact('lowongan'));
     }
 
+    public function index()
+    {
+        $user = Auth::user();
+        $aplikasis = $user->aplikasis()->with('lowongan')->orderBy('created_at', 'desc')->get();
+
+        return view('aplikasis.index', compact('aplikasis'));
+    }
+
     public function store(Request $request, Lowongan $lowongan)
     {
         $user = Auth::user();

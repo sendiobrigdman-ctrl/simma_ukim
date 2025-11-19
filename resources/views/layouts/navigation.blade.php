@@ -23,6 +23,11 @@
                             Manajemen Pengguna
                         </x-nav-link>
                     @endif
+                    @if(auth()->check() && auth()->user()->role == 'mahasiswa')
+                        <x-nav-link :href="route('mahasiswa.aplikasi.index')" :active="request()->routeIs('mahasiswa.aplikasi.*')">
+                            Riwayat Lamaran
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -84,6 +89,11 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                     Manajemen Pengguna
+                </x-responsive-nav-link>
+            @endif
+            @if(auth()->check() && auth()->user()->role == 'mahasiswa')
+                <x-responsive-nav-link :href="route('mahasiswa.aplikasi.index')" :active="request()->routeIs('mahasiswa.aplikasi.*')">
+                    Riwayat Lamaran
                 </x-responsive-nav-link>
             @endif
         </div>
