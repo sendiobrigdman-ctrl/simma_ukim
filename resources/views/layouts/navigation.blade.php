@@ -19,6 +19,9 @@
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             Admin Dashboard
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.lowongans.moderation.index')" :active="request()->routeIs('admin.lowongans.moderation.*')">
+                            Moderasi Lowongan
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                             Manajemen Pengguna
                         </x-nav-link>

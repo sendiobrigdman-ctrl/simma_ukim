@@ -9,8 +9,10 @@ class MahasiswaLowonganController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil semua lowongan yang tersedia (kolom status tidak ada di skema saat ini)
-        $lowongans = Lowongan::orderBy('created_at', 'desc')->paginate(10);
+        // Only show approved lowongans to mahasiswa
+        $lowongans = Lowongan::where('status', Lowongan::STATUS_APPROVED)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         return view('mahasiswa.lowongan.index', compact('lowongans'));
     }
 

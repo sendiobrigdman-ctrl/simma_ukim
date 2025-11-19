@@ -92,5 +92,10 @@ Route::prefix('admin')->middleware(['auth', EnsureRoleIsAdmin::class])->name('ad
 
     // Mitra management
     Route::resource('mitra', \App\Http\Controllers\AdminMitraController::class);
+
+    // Lowongan moderation
+    Route::get('lowongans/moderation', [\App\Http\Controllers\Admin\LowonganModerationController::class, 'index'])->name('lowongans.moderation.index');
+    Route::get('lowongans/moderation/{lowongan}', [\App\Http\Controllers\Admin\LowonganModerationController::class, 'show'])->name('lowongans.moderation.show');
+    Route::patch('lowongans/{lowongan}/status', [\App\Http\Controllers\Admin\LowonganModerationController::class, 'updateStatus'])->name('lowongans.moderation.updateStatus');
 });
 
