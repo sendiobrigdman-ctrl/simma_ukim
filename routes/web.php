@@ -82,6 +82,11 @@ Route::middleware(['auth', EnsureRoleIsMahasiswa::class])->prefix('lowongan')->n
 // Mahasiswa application history
 Route::middleware(['auth', EnsureRoleIsMahasiswa::class])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     Route::get('/lamaran', [MahasiswaAplikasiController::class, 'index'])->name('aplikasi.index');
+    // Logbooks (buku harian kegiatan)
+    Route::get('/logbooks', [\App\Http\Controllers\MahasiswaLogbookController::class, 'index'])->name('logbooks.index');
+    Route::get('/logbooks/create', [\App\Http\Controllers\MahasiswaLogbookController::class, 'create'])->name('logbooks.create');
+    Route::post('/logbooks', [\App\Http\Controllers\MahasiswaLogbookController::class, 'store'])->name('logbooks.store');
+    Route::delete('/logbooks/{logbook}', [\App\Http\Controllers\MahasiswaLogbookController::class, 'destroy'])->name('logbooks.destroy');
 });
 
 Route::prefix('admin')->middleware(['auth', EnsureRoleIsAdmin::class])->name('admin.')->group(function () {

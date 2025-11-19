@@ -17,7 +17,7 @@ class MahasiswaLowonganTest extends TestCase
     public function test_mahasiswa_can_view_index_and_show()
     {
         $mahasiswa = User::factory()->create(['role' => 'mahasiswa']);
-        $lowongan = Lowongan::create(['title' => 'Lowongan Test', 'description' => 'Deskripsi']);
+        $lowongan = Lowongan::create(['title' => 'Lowongan Test', 'description' => 'Deskripsi', 'status' => Lowongan::STATUS_APPROVED]);
 
         $this->actingAs($mahasiswa)
             ->get('/lowongan')
@@ -35,7 +35,7 @@ class MahasiswaLowonganTest extends TestCase
     public function test_mahasiswa_can_apply_to_lowongan()
     {
         $mahasiswa = User::factory()->create(['role' => 'mahasiswa']);
-        $lowongan = Lowongan::create(['title' => 'Lowongan Apply', 'description' => 'Desc']);
+        $lowongan = Lowongan::create(['title' => 'Lowongan Apply', 'description' => 'Desc', 'status' => Lowongan::STATUS_APPROVED]);
 
         Storage::fake('local');
 
@@ -57,7 +57,7 @@ class MahasiswaLowonganTest extends TestCase
     public function test_non_mahasiswa_cannot_access_lowongan_routes()
     {
         $dosen = User::factory()->create(['role' => 'dosen']);
-        $lowongan = Lowongan::create(['title' => 'Lowongan Test', 'description' => 'Deskripsi']);
+        $lowongan = Lowongan::create(['title' => 'Lowongan Test', 'description' => 'Deskripsi', 'status' => Lowongan::STATUS_APPROVED]);
 
         $this->actingAs($dosen)
             ->get('/lowongan')

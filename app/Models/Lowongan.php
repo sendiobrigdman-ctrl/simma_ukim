@@ -9,7 +9,7 @@ class Lowongan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'mitra_id', 'position', 'location', 'salary'];
+    protected $fillable = ['title', 'description', 'mitra_id', 'position', 'location', 'salary', 'status'];
 
     // Status constants for moderation
     public const STATUS_PENDING = 'pending';
