@@ -9,7 +9,7 @@ class Aplikasi extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'user_id', 'lowongan_id', 'status_aplikasi'];
+    protected $fillable = ['name', 'user_id', 'lowongan_id', 'status_aplikasi', 'cv_path'];
 
     public function user()
     {

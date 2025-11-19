@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Lowongan;
 use App\Models\Aplikasi;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class MahasiswaLowonganTest extends TestCase
 {
@@ -35,14 +37,21 @@ class MahasiswaLowonganTest extends TestCase
         $mahasiswa = User::factory()->create(['role' => 'mahasiswa']);
         $lowongan = Lowongan::create(['title' => 'Lowongan Apply', 'description' => 'Desc']);
 
+        Storage::fake('local');
+
+        $file = UploadedFile::fake()->create('cv.pdf', 100, 'application/pdf');
+
         $this->actingAs($mahasiswa)
-            ->post("/lowongan/{$lowongan->id}/apply")
+            ->post("/lowongan/{$lowongan->id}/apply", [
+                'cv' => $file,
+            ])
             ->assertRedirect('/lowongan');
 
-        $this->assertDatabaseHas('aplikasis', [
-            'user_id' => $mahasiswa->id,
-            'lowongan_id' => $lowongan->id,
-        ]);
+        $aplikasi = Aplikasi::where('user_id', $mahasiswa->id)->where('lowongan_id', $lowongan->id)->first();
+        $this->assertNotNull($aplikasi);
+        $this->assertNotNull($aplikasi->cv_path);
+
+        Storage::disk('local')->assertExists($aplikasi->cv_path);
     }
 
     public function test_non_mahasiswa_cannot_access_lowongan_routes()

@@ -24,10 +24,17 @@ class MahasiswaAplikasiController extends Controller
         if ($exists) {
             return redirect()->back()->with('error', 'Anda sudah melamar lowongan ini.');
         }
+
+        $data = $request->validate([
+            'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ]);
+
+        $cvPath = $request->file('cv')->store('cvs');
+
         Aplikasi::create([
             'user_id' => $user->id,
             'lowongan_id' => $lowongan->id,
-            // Tambahkan field lain jika perlu
+            'cv_path' => $cvPath,
         ]);
         return redirect()->route('mahasiswa.lowongan.index')->with('success', 'Lamaran berhasil diajukan.');
     }

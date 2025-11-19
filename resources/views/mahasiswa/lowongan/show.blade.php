@@ -16,12 +16,23 @@
             {{ $lowongan->description ?? 'Deskripsi belum tersedia.' }}
         </div>
 
-        <div class="mt-6 flex items-center justify-between">
+        <div class="mt-6">
             <a href="{{ route('mahasiswa.lowongan.index') }}" class="text-gray-600">&larr; Kembali</a>
 
-            <form action="{{ route('mahasiswa.lowongan.apply', $lowongan) }}" method="POST">
+            <form action="{{ route('mahasiswa.lowongan.apply', $lowongan) }}" method="POST" enctype="multipart/form-data" class="mt-4">
                 @csrf
-                <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Ajukan Lamaran</button>
+
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Upload CV (PDF/DOC/DOCX) <span class="text-red-600">*</span></label>
+                    <input type="file" name="cv" accept=".pdf,.doc,.docx" required class="mt-1 block w-full" />
+                    @error('cv')
+                        <p class="text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex justify-end">
+                    <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Ajukan Lamaran</button>
+                </div>
             </form>
         </div>
     </div>
