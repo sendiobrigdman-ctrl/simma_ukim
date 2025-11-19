@@ -44,6 +44,10 @@ Route::middleware(['auth', EnsureRoleIsMitra::class])->prefix('mitra')->name('mi
     // Pelamar management for mitra: list applicants and update status
     Route::get('lowongan/{lowongan}/pelamar', [\App\Http\Controllers\MitraPelamarController::class, 'index'])->name('lowongans.pelamar.index');
     Route::patch('lamaran/{aplikasi}/status', [\App\Http\Controllers\MitraPelamarController::class, 'updateStatus'])->name('lamaran.updateStatus');
+    
+    // Logbook verification by mitra
+    Route::get('logbooks', [\App\Http\Controllers\MitraLogbookController::class, 'index'])->name('logbooks.index');
+    Route::patch('logbooks/{logbook}/status', [\App\Http\Controllers\MitraLogbookController::class, 'updateStatus'])->name('logbooks.updateStatus');
 });
 
 require __DIR__.'/auth.php';
